@@ -26,7 +26,9 @@ const RegisterForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<IRegisterUser> = (data) => {
+  const onSubmit: SubmitHandler<IRegisterUser> = (data, event) => {
+    event?.preventDefault();
+
     const { confirmPassword, ...newData } = data;
     registerUser(newData)
       .then((res) => {
@@ -39,14 +41,14 @@ const RegisterForm = () => {
             fontWeight: "bolder",
           },
         });
-        console.table(res);
       })
       .catch((err) => {
-        toast("USUARIO CADASTRADO COM SUCESSO", {
+        const errorMessage = err.message;
+        toast(errorMessage.toUpperCase(), {
           style: {
             borderRadius: "50px",
-            background: "#F4F3F7",
-            color: "#3C2F58",
+            background: "#e70000",
+            color: "#f7f3f3",
             fontSize: "1.3rem",
             fontWeight: "bolder",
           },
